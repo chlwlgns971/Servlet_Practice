@@ -1,0 +1,62 @@
+<html>
+	<head>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+	</head>
+	<body>
+		<h4>구구단(8*9)</h4>
+		2단 부터 9단 까지의 구구단 랜더링.
+		출력되는 구구단 text 형식 : "2 * 2 = 4"
+		<br><br>
+		<form name="gugudanForm">
+			최소단 : 
+			<select id="minDan" name="minDan" required>
+				<option>최소단</option>
+				#options#
+			</select>
+			최대단 :
+			<select id="maxDan" name="maxDan" required>
+				<option>최대단</option>
+				#options#
+			</select>
+			<input type="submit" value="전송"> 
+		</form>
+		<table border="1" id="gugudanTable">
+			#gugudanText#
+		</table>
+		
+		<script>
+			//document.gugudanForm.maxDan.value="#maxDan#";
+			//document.gugudanForm.minDan.value="#minDan#";
+			$("[name='maxDan']").val(#maxDan#);
+			$("[name='minDan']").val(#minDan#);
+			$("form:first").on("submit", function(event){
+				event.preventDefault(); // 이벤트 핸들러 1 (함수), 아래에 나오는 과정은 진행된다.
+				/* console.log(this, this.name); //this -> html element
+				console.log(event.target); //event.target -> html element, 위와 같다.
+				console.log($(this), $(this).attr('name')); //$() -> jQuery 객체로 만드는 생성자 */
+				let url = this.action;
+				let method = this.method;
+				let data = $(this).serialize(); // query string 생성
+				console.log(url);
+				console.log(method);
+				console.log(data);
+				$.ajax({
+					url : url,
+					method : method,
+					data : data, // {} 안에 키와 값으로 설정해서 서블릿으로 보내도 query string 형식으로 간다.
+					dataType : "html", 
+					// dataType : "json" -> dataType : "application/json" : dataType은 받을 데이터의 Mime을 정해주는 것이다.
+					// ajax로는 이미지 스트리밍이 불 가능하다. 문자 데이터만 받을 수 있다.
+					success : function(resp){
+						$("#gugudanTable").html(resp);
+					},
+					error : function(errorResp){
+						cosole.log(errorResp.status);
+					}
+				});
+				return false; // 이벤트 핸들러 2 (return), 아래에 나오는 과정은 진행되지 않는다.
+			});
+		</script>
+		
+	</body>
+</html>
