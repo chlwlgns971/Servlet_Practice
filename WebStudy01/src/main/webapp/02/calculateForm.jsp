@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.enumpkg.OperatorType"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,18 +14,53 @@
 1. 동기 처리
 2. 비동기 처리
 </pre>
-<form action="<%=request.getContextPath()%>/calculate"> 
-	<input type="number" name="leftOp"/>
-	<select name="operator">
-		<option value="PLUS">+</option>
-		<option value="MINUS">-</option>
-		<option value="MULTIPLY">*</option>
-		<option value="DIVIDE">/</option>
-	</select>
-	<input type="number" name="rightOp"/>
-	<input type="submit" value="="/>
+<form id="calcForm" action="<%=request.getContextPath()%>/calculate2" method="get">
+   <input  type="number" name="leftOp" />
+   <select name="operator">
+      <%
+         for(OperatorType single :OperatorType.values()){
+            %>
+               <option value="<%=single.name()%>"><%=single.getSign()%></option>
+            <%
+         }
+      %>
+   </select>
+   <input type="number" name="rightOp" />
+   <input type="submit" value="=">
 </form>
-결과
-<span id="resultArea"></span>
+<%-- ${leftOp} ${op} ${rightOp} = ${res} --%>
+<h4><span id="resultArea"></span></h4>
+
+   <script type="text/javascript">
+    /*    const PATTERN = "%LO %OP %RO = %RE";
+      
+        $(document).on("submit", "#calcForm", function(event) {
+         event.preventDefault();
+         let url = this.action;
+         let method = this.method;
+         let data = $(this).serialize(); // query string 생성
+         
+         $.ajax({
+            url : url,
+            method : method,
+            data : data,
+            dataType : "json",
+            success : function(resp) {
+               $("#resultArea")
+                     .html(
+                        PATTERN.replace("%LO", resp.leftOp)
+                           .replace("%OP", resp.op)
+                           .replace("%RO", resp.rightOp)
+                           .replace("%RE", resp.res)
+                     );
+               
+            },
+            error : function(errorResp) {
+               console.log(errorResp.status);
+            }
+         });         
+         return false;
+      });    */
+   </script>
 </body>
 </html>
