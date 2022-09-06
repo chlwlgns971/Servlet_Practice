@@ -1,6 +1,7 @@
 package kr.or.ddit.servlet03;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -11,11 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.filters.ExpiresFilter.XHttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.or.ddit.enumpkg.OperatorType;
+import kr.or.ddit.vo.CalculateVO;
 
 
 @WebServlet("/calculate2")
 public class CalculateServlet2 extends HttpServlet {
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json;charset=UTF-8");
+		try {
+			InputStream is = request.getInputStream();
+			PrintWriter out=response.getWriter();
+			
+			ObjectMapper mapper = new ObjectMapper();
+			CalculateVO vo = mapper.readValue(is, CalculateVO.class);
+			
+			mapper.writeValue(out, vo);
+		} catch (IOException e) {
+			// TODO: handle exception
+		}	
+	}
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String left = request.getParameter("leftOp");

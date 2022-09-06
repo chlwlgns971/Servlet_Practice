@@ -14,7 +14,7 @@
 1. 동기 처리
 2. 비동기 처리
 </pre>
-<form id="calcForm" action="<%=request.getContextPath()%>/calculate2" method="get">
+<form id="calcForm" action="<%=request.getContextPath()%>/calculate2" method="post" name="calForm">
    <input  type="number" name="leftOp" />
    <select name="operator">
       <%
@@ -28,6 +28,37 @@
    <input type="number" name="rightOp" />
    <input type="submit" value="=">
 </form>
+<script type="text/javascript">
+	let calForm = $(document.calForm).on("submit",function(event){
+		event.preventDefalut();
+		
+		let url = this.action;
+		let method = this,method;
+		//let data = $(this).serialize() //QueryString
+		let jsObj = {
+			leftOp : 23,
+			rightOp : 16,
+			operator : "PLUS"
+			
+		};
+		let json = JSON.stringify(jsObj);
+		$.ajax({
+            url : url,
+            method : method,
+            contentType : "application/json;charset=UTF-8"
+            data : json,
+            dataType : "json",
+            success : function(resp) {
+            	console.log(resp);
+            	calForm.after(resp.expression);
+            },
+            error : function(errorResp) {
+               console.log(errorResp.status);
+            }
+         });         
+         return false;
+	});
+</script>
 <%-- ${leftOp} ${op} ${rightOp} = ${res} --%>
 <h4><span id="resultArea"></span></h4>
 
