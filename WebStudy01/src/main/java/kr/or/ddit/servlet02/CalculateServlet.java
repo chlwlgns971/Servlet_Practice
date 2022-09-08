@@ -16,7 +16,7 @@ import kr.or.ddit.vo.CalculateVO;
 
 @WebServlet("/calculate")
 public class CalculateServlet extends HttpServlet {
-
+	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String leftOp = req.getParameter("leftOp");

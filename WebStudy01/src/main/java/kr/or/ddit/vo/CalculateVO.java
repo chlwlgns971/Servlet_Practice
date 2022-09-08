@@ -7,10 +7,10 @@ import kr.or.ddit.enumpkg.OperatorType;
 public class CalculateVO implements Serializable{
 	private int leftOp;
 	private int rightOp;
-	private OperatorType operateor;
+	private OperatorType operator;
 	
 	public String getExpression() {
-		return operateor.getExpression(leftOp, rightOp);
+		return operator.getExpression(leftOp, rightOp);
 	}
 	
 	public int getLeftOp() {
@@ -25,18 +25,18 @@ public class CalculateVO implements Serializable{
 	public void setRightOp(int rightOp) {
 		this.rightOp = rightOp;
 	}
-	public OperatorType getOperateor() {
-		return operateor;
+	public OperatorType getOperator() {
+		return operator;
 	}
-	public void setOperateor(OperatorType operateor) {
-		this.operateor = operateor;
+	public void setOperator(OperatorType operator) {
+		this.operator = operator;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + leftOp;
-		result = prime * result + ((operateor == null) ? 0 : operateor.hashCode());
+		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
 		result = prime * result + rightOp;
 		return result;
 	}
@@ -51,7 +51,7 @@ public class CalculateVO implements Serializable{
 		CalculateVO other = (CalculateVO) obj;
 		if (leftOp != other.leftOp)
 			return false;
-		if (operateor != other.operateor)
+		if (operator != other.operator)
 			return false;
 		if (rightOp != other.rightOp)
 			return false;
@@ -59,7 +59,7 @@ public class CalculateVO implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "CalculateVO [leftOp=" + leftOp + ", rightOp=" + rightOp + ", operateor=" + operateor + "]";
+		return "CalculateVO [leftOp=" + leftOp + ", rightOp=" + rightOp + ", operator=" + operator + "]";
 	}
 	
 }
