@@ -18,7 +18,7 @@
 			-200~ : 응답성공
 			-300~ : 클라이언트의 추가 액션이 필요함.
 				-304(Not Modified)
-				-307(Moved)-Location헤더와 병행. Redirect 이동구조에서 활용
+				-301/ 302/ 307(Moved)-Location헤더와 병행. Redirect 이동구조에서 활용
 			-400~ : 클라이언트측 오류로 실패
 				-404(Not Found, Not Exist)
 				-405(Method Not Allowed) : 서블릿을 만들고 오버라이딩을 하지 않으면 발생
