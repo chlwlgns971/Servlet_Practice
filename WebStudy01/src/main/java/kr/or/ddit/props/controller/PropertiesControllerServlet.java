@@ -19,7 +19,7 @@ import kr.or.ddit.props.service.PropertyServiceImpl;
 import kr.or.ddit.props.vo.PropertyVO;
 
 @WebServlet({ "/properties", "/property" })
-public class PropertiesControllerService extends HttpServlet {
+public class PropertiesControllerServlet extends HttpServlet {
 	private PropertyService service = new PropertyServiceImpl();
 
 	@Override
@@ -38,6 +38,9 @@ public class PropertiesControllerService extends HttpServlet {
 				statusCode = HttpServletResponse.SC_BAD_REQUEST;
 			else
 				model = service.readProperty(name);
+			String message = (String) req.getSession().getAttribute("message");
+			req.getSession().removeAttribute("message"); // flush attribute
+			System.out.println(message);
 		}
 		if (statusCode == 200) {
 
@@ -66,6 +69,10 @@ public class PropertiesControllerService extends HttpServlet {
 		if (valid) {
 
 			service.createProperty(newProp);
+
+			String message = "성공";
+			req.getSession().setAttribute("message", message);
+
 			String viewName = "/property?name=newProp" + newProp.getPropertyName(); // 이미 위에 property 마샬링하는 애가 있으니까 안만들고
 																					// 저기로 보내는것임(name가지고)
 			resp.sendRedirect(req.getContextPath() + viewName); // 위에 do get으로 보냄 첫번째else로

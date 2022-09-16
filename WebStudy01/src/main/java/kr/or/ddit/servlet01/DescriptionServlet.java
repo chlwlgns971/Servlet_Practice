@@ -65,6 +65,9 @@ public class DescriptionServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("doGet 호출");
+		System.out.println(req.getServletContext().hashCode());
+		System.out.println(req.getSession().getServletContext());
+		System.out.println(getServletContext().hashCode());
 	}
 
 	private void destory() {
