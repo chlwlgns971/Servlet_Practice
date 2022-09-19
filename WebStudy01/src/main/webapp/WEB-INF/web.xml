@@ -3,7 +3,7 @@
   
   <display-name>WebStudy01</display-name>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.do</welcome-file>
   </welcome-file-list>
   <context-param> <!-- 밑에 <init-param> 반복되는 것을 해결할 수 있다. -->
   		<param-name>imageFolderPath</param-name>
