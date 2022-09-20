@@ -3,12 +3,14 @@ package kr.or.ddit.props.service;
 import java.util.List;
 
 import kr.or.ddit.commons.exception.PKNotFoundException;
+import kr.or.ddit.props.dao.DataBasePropertyDAOimpl;
 import kr.or.ddit.props.dao.FileSystemPropertyDaoImpl;
 import kr.or.ddit.props.dao.PropertyDAO;
 import kr.or.ddit.props.vo.PropertyVO;
 
 public class PropertyServiceImpl implements PropertyService {
-	private PropertyDAO dao = new FileSystemPropertyDaoImpl(); //정상적인 의존구조 -> 결합력을 높게 발생시킨다. / 단일책임을 권고해야하는 이유? -> 응집력을 높이고 결합도를 낮춘다.
+	//private PropertyDAO dao = new FileSystemPropertyDaoImpl(); //정상적인 의존구조 -> 결합력을 높게 발생시킨다. / 단일책임을 권고해야하는 이유? -> 응집력을 높이고 결합도를 낮춘다.
+	private PropertyDAO dao = new DataBasePropertyDAOimpl(); //정상적인 의존구조 -> 결합력을 높게 발생시킨다. / 단일책임을 권고해야하는 이유? -> 응집력을 높이고 결합도를 낮춘다.
 	
 	@Override
 	public PropertyVO readProperty(String propertyName) {
