@@ -2,6 +2,7 @@ package kr.or.ddit.props.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -17,8 +18,8 @@ public class DataBasePropertyDAOimpl implements PropertyDAO {
    @Override
    public PropertyVO selectProperty(String propertyName) {
       // TODO Auto-generated method stub
-         String sql = "SELECT  PROPERTY_VALUE, DESCRIPTION FROM DATABASE_PROPERTIES"
-               + " WHERE PROPERTY_NAME = '" +  propertyName + "'";
+         String sql = "SELECT PROPERTY_VALUE, DESCRIPTION FROM DATABASE_PROPERTIES"
+               + " WHERE PROPERTY_NAME = ?";
          
          PropertyVO propertyVO = null;
          String[] headers = null;
@@ -26,9 +27,10 @@ public class DataBasePropertyDAOimpl implements PropertyDAO {
          
          try(
             Connection oracleConn = ConnectionFactory.getConnection();
-            Statement oracleStmt = oracleConn.createStatement();
+            PreparedStatement oracleStmt = oracleConn.prepareStatement(sql);
          ) {
-            ResultSet rs = oracleStmt.executeQuery(sql);
+        	oracleStmt.setString(1, propertyName);
+            ResultSet rs = oracleStmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int count = rsmd.getColumnCount();
             headers = new String[count];
@@ -36,10 +38,10 @@ public class DataBasePropertyDAOimpl implements PropertyDAO {
                headers[i-1] = rsmd.getColumnName(i);
             }
             if(rs.next()){
-               propertyVO = new PropertyVO();
-               propertyVO.setPropertyName(rs.getString("property_name"));
-               propertyVO.setPropertyValue(rs.getString("property_value"));
-               propertyVO.setDescription(rs.getString("DESCRIPTION"));
+            	propertyVO = new PropertyVO();
+                propertyVO.setPropertyName(rs.getString("PROPERTY_NAME"));
+                propertyVO.setPropertyValue(rs.getString("property_value"));
+                propertyVO.setDescription(rs.getString("DESCRIPTION"));
             }
             return propertyVO;
          } catch (SQLException e) {
@@ -95,7 +97,7 @@ public class DataBasePropertyDAOimpl implements PropertyDAO {
 
    @Override
    public void insertProperty(PropertyVO propertyVo) {
-      // TODO Auto-generated method stub
+      if(1==1) throw new RuntimeException("해당 뷰는 insert 할 수 없습니다.");
 
    }
 
