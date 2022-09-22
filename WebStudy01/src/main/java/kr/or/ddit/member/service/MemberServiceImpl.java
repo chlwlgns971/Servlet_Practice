@@ -2,6 +2,7 @@ package kr.or.ddit.member.service;
 
 import java.util.List;
 
+import kr.or.ddit.commons.exception.UserNotFoundException;
 import kr.or.ddit.member.dao.MemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
@@ -12,14 +13,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ServiceResult createMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = null;
+		try {
+			retrieveMember(member.getMemId());
+			result = ServiceResult.PKDUPLICATED;
+		} catch (UserNotFoundException e) {
+			int rowcnt = dao.insertMember(member);
+			result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		}
+		return result;
 	}
 
 	@Override
 	public MemberVO retrieveMember(String memId) {
-		// TODO Auto-generated method stub
-		return dao.selectMember(memId);
+		MemberVO member = dao.selectMember(memId);
+		if(member==null)
+			throw new UserNotFoundException(memId);
+		return member;
 	}
 
 	@Override
@@ -35,8 +45,16 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ServiceResult removeMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = null;
+		int count = 0;
+		try {
+			retrieveMember(member.getMemId());
+			count = dao.deleteMember(member.getMemId());
+			result = count > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		} catch (UserNotFoundException e) {
+			result = ServiceResult.FAIL;
+		}
+		return result;
 	}
 
 }

@@ -2,3 +2,15 @@
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/js/bootstrap-5.1.3-dist/css/bootstrap.min.css">
 <script src="<%=request.getContextPath()%>/resources/js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+<%
+	String message = (String) request.getAttribute("message");
+	if(message == null) message = (String)session.getAttribute("message");
+	if (message != null && !message.isEmpty()) {
+	%>
+	alert("<%=message%>")
+	<%
+	session.removeAttribute("message");
+	}
+%>
+</script>

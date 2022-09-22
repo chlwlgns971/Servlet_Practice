@@ -13,18 +13,23 @@ public class MemberServiceImplTest {
 	
 	@Test
 	public void testCreateMember() {
-		fail("Not yet implemented");
+		MemberVO vo =new MemberVO();
+		vo.setMemId("askfhaklfhaslkf");
+		vo.setMemPass("1234");
+		ServiceResult result = service.createMember(vo);
+		//System.out.println(result);
 	}
 
 	@Test
 	public void testRetrieveMember() {
-		fail("Not yet implemented");
+		MemberVO vo = service.retrieveMember("asflasfj;aasl;");
+		//System.out.println(vo);
 	}
 
 	@Test
 	public void testRetrieveMemberList() {
 		List<MemberVO> list = service.retrieveMemberList();
-		System.out.println(list);
+		//System.out.println(list);
 	}
 
 	@Test
@@ -34,7 +39,10 @@ public class MemberServiceImplTest {
 
 	@Test
 	public void testRemoveMember() {
-		fail("Not yet implemented");
+		MemberVO vo = new MemberVO();
+		vo.setMemId("   ㅁㄴㅇㅁ");
+		ServiceResult result = service.removeMember(vo);
+		System.out.println(result);
 	}
 
 }

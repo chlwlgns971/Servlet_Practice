@@ -13,7 +13,12 @@ public class MemberDAOImplTest {
 
 	@Test
 	public void testInsertMember() {
-		fail("Not yet implemented");
+		MemberVO vo = new MemberVO();
+		vo.setMemId("z001");
+		vo.setMemPass("123456");
+
+		int cnt = dao.insertMember(vo);
+		System.out.println(cnt);
 	}
 
 	@Test
@@ -28,19 +33,23 @@ public class MemberDAOImplTest {
 	public void testSelectMemberList() {
 		List<MemberVO> list = dao.selectMemberList();
 		System.out.println(list);
-		//assertNotNull(list);
-		//assertNotEquals(0, list.size());
-		//assertNotNull(list.get(0).getMemName());
+		// assertNotNull(list);
+		// assertNotEquals(0, list.size());
+		// assertNotNull(list.get(0).getMemName());
 	}
 
 	@Test
 	public void testUpdateMember() {
-		fail("Not yet implemented");
+		MemberVO vo = dao.selectMember("a001");
+		int cnt = dao.updateMember(vo);
+		System.out.println(cnt);
 	}
 
 	@Test
 	public void testDeleteMember() {
-		fail("Not yet implemented");
+		String id = "null";
+		int cnt = dao.deleteMember(id);
+		System.out.println(cnt);
 	}
 
 }
