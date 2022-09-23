@@ -34,7 +34,7 @@ public class MemberDAOImpl implements MemberDAO {
 				+ "    mem_memorial,\r\n"
 				+ "    mem_memorialday,\r\n"
 				+ "    mem_mileage \r\n"
-				+ ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ ") VALUES (?, ?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TO_DATE(?,'YYYY-MM-DD'), ?)";
 		try (
 			Connection conn = ConnectionFactory.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -67,7 +67,26 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO selectMember(String memId) {
-		String sql = "SELECT* FROM MEMBER WHERE MEM_ID = ?";
+		String sql = "SELECT\r\n"
+				+ "    MEM_ID,\r\n"
+				+ "    MEM_PASS,\r\n"
+				+ "    MEM_NAME,\r\n"
+				+ "    MEM_REGNO1,\r\n"
+				+ "    MEM_REGNO2,\r\n"
+				+ "    TO_CHAR(MEM_BIR,'YYYY-MM-DD'),\r\n"
+				+ "    MEM_ZIP,\r\n"
+				+ "    MEM_ADD1,\r\n"
+				+ "    MEM_ADD2,\r\n"
+				+ "    MEM_HOMETEL,\r\n"
+				+ "    MEM_COMTEL,\r\n"
+				+ "    MEM_HP,\r\n"
+				+ "    MEM_MAIL,\r\n"
+				+ "    MEM_JOB,\r\n"
+				+ "    MEM_LIKE,\r\n"
+				+ "    MEM_MEMORIAL,\r\n"
+				+ "    TO_CHAR(MEM_MEMORIALDAY,'YYYY-MM-DD'),\r\n"
+				+ "    MEM_MILEAGE\r\n"
+				+ "FROM MEMBER WHERE MEM_ID=?";
 		MemberVO vo =null;
 		try (
 			Connection conn = ConnectionFactory.getConnection();
@@ -82,7 +101,7 @@ public class MemberDAOImpl implements MemberDAO {
 				vo.setMemName(rs.getString("MEM_NAME"));
 				vo.setMemRegno1(rs.getString("MEM_REGNO1"));
 				vo.setMemRegno2(rs.getString("MEM_REGNO2"));
-				vo.setMemBir(rs.getString("MEM_BIR"));
+				vo.setMemBir(rs.getString("TO_CHAR(MEM_BIR,'YYYY-MM-DD')"));
 				vo.setMemZip(rs.getString("MEM_ZIP"));
 				vo.setMemMail(rs.getString("MEM_MAIL"));
 				vo.setMemHometel(rs.getString("MEM_HOMETEL"));
@@ -93,7 +112,7 @@ public class MemberDAOImpl implements MemberDAO {
 				vo.setMemAdd1(rs.getString("MEM_ADD1"));
 				vo.setMemAdd2(rs.getString("MEM_ADD2"));
 				vo.setMemMemorial(rs.getString("MEM_MEMORIAL"));
-				vo.setMemMemorialday(rs.getString("MEM_MEMORIALDAY"));
+				vo.setMemMemorialday(rs.getString("TO_CHAR(MEM_MEMORIALDAY,'YYYY-MM-DD')"));
 				vo.setMemMileage(rs.getInt("MEM_MILEAGE"));
 			}
 		} catch (SQLException e) {
@@ -140,12 +159,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int updateMember(MemberVO member) {
 		int cnt = 0;
-		String sql = "UPDATE MEMBER SET(\r\n"
+		String sql = "UPDATE MEMBER SET\r\n"
 				+ "    mem_pass=?,\r\n"
 				+ "    mem_name=?,\r\n"
 				+ "    mem_regno1=?,\r\n"
 				+ "    mem_regno2=?,\r\n"
-				+ "    mem_bir=?,\r\n"
+				+ "    mem_bir=TO_DATE(?,'YYYY-MM-DD'),\r\n"
 				+ "    mem_zip=?,\r\n"
 				+ "    mem_add1=?,\r\n"
 				+ "    mem_add2=?,\r\n"
@@ -156,15 +175,34 @@ public class MemberDAOImpl implements MemberDAO {
 				+ "    mem_job=?,\r\n"
 				+ "    mem_like=?,\r\n"
 				+ "    mem_memorial=?,\r\n"
-				+ "    mem_memorialday=?,\r\n"
-				+ "    mem_mileage=? \r\n"
-				+ ") WHERE MEM_ID=?";
-		
+				+ "    mem_memorialday=TO_DATE(?,'YYYY-MM-DD')\r\n"
+				+ " WHERE MEM_ID=?";
+		String sql2 = "UPDATE member\r\n"
+				+ "    SET\r\n"
+				+ "	   AND   mem_pass =:v1\r\n"
+				+ "    AND   mem_name =:v2\r\n"
+				+ "    AND   mem_regno1 =:v3\r\n"
+				+ "    AND   mem_regno2 =:v4\r\n"
+				+ "    AND   mem_bir =:v5\r\n"
+				+ "    AND   mem_zip =:v6\r\n"
+				+ "    AND   mem_add1 =:v7\r\n"
+				+ "    AND   mem_add2 =:v8\r\n"
+				+ "    AND   mem_hometel =:v9\r\n"
+				+ "    AND   mem_comtel =:v10\r\n"
+				+ "    AND   mem_hp =:v11\r\n"
+				+ "    AND   mem_mail =:v12\r\n"
+				+ "    AND   mem_job =:v13\r\n"
+				+ "    AND   mem_like =:v14\r\n"
+				+ "    AND   mem_memorial =:v15\r\n"
+				+ "    AND   mem_memorialday =:v16\r\n"
+				+ "    AND   mem_mileage =:v17\r\n"
+				+ "    AND   mem_delete =:v18;"
+				+ "WHERE mem_id = ?";
 		try (
 			Connection conn = ConnectionFactory.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
 		) {
-			stmt.setString(18, member.getMemId());
+			stmt.setString(17, member.getMemId());
 			stmt.setString(1, member.getMemPass());
 			stmt.setString(2, member.getMemName());
 			stmt.setString(3, member.getMemRegno1());
@@ -181,7 +219,6 @@ public class MemberDAOImpl implements MemberDAO {
 			stmt.setString(14, member.getMemLike());
 			stmt.setString(15, member.getMemMemorial());
 			stmt.setString(16, member.getMemMemorialday());
-			stmt.setInt(17, member.getMemMileage());
 			
 			cnt = stmt.executeUpdate();
 		} catch (SQLException e) {

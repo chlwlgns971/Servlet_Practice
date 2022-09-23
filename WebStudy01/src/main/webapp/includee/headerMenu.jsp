@@ -7,16 +7,16 @@
   </button>
   <ul class="nav px-3 col">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">상단메뉴1</a>
+      <a class="nav-link" href="<%=request.getContextPath()%>/member/memberList.do">회원관리</a>
     </li>
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">상단메뉴2</a>
+      <a class="nav-link" href="#">상품관리</a>
     </li>
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">상단메뉴3</a>
+      <a class="nav-link" href="#">거래처관리</a>
     </li>
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">상단메뉴4</a>
+      <a class="nav-link" href="#">게시판</a>
     </li>
   </ul>
   <ul class="nav px-3 col-2">

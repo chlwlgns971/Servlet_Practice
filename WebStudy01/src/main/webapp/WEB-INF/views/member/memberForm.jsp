@@ -20,9 +20,8 @@ if (message != null && !message.isEmpty()) {
 }
 %>
 <h4>가입양식</h4>
-<form action="<%=request.getContextPath()%>/member/memberInsert.do"
-	method="post">
-	<table>
+<form method="post">
+	<table class="table table-bordered">
 		<tr>
 			<th>회원ID</th>
 			<td>
@@ -61,58 +60,58 @@ if (message != null && !message.isEmpty()) {
 		</tr>
 		<tr>
 			<th>우편번호</th>
-			<td><input type="text" name="memZip" class="form-control"
+			<td><input type="text" name="memZip" class="form-control editable"
 				value="<%=member.getMemZip()%>" /><span class="error"><%=errors.get("memZip")%></span></td>
 		</tr>
 		<tr>
 			<th>주소1</th>
-			<td><input type="text" name="memAdd1" class="form-control"
+			<td><input type="text" name="memAdd1" class="form-control editable"
 				value="<%=member.getMemAdd1()%>" /><span class="error"><%=errors.get("memAdd1")%></span></td>
 		</tr>
 		<tr>
 			<th>주소2</th>
-			<td><input type="text" name="memAdd2" class="form-control"
+			<td><input type="text" name="memAdd2" class="form-control editable"
 				value="<%=member.getMemAdd2()%>" /><span class="error"><%=errors.get("memAdd2")%></span></td>
 		</tr>
 		<tr>
 			<th>집전화번호</th>
-			<td><input type="text" name="memHometel" class="form-control"
+			<td><input type="text" name="memHometel" class="form-control editable"
 				value="<%=member.getMemHometel()%>" /><span class="error"><%=errors.get("memHometel")%></span></td>
 		</tr>
 		<tr>
 			<th>회사번호</th>
-			<td><input type="text" name="memComtel" class="form-control"
+			<td><input type="text" name="memComtel" class="form-control editable"
 				value="<%=member.getMemComtel()%>" /><span class="error"><%=errors.get("memComtel")%></span></td>
 		</tr>
 		<tr>
 			<th>이동전화번호</th>
-			<td><input type="text" name="memHp" class="form-control"
+			<td><input type="text" name="memHp" class="form-control editable"
 				value="<%=member.getMemHp()%>" /><span class="error"><%=errors.get("memHp")%></span></td>
 		</tr>
 		<tr>
 			<th>이메일주소</th>
-			<td><input type="text" name="memMail" class="form-control"
+			<td><input type="text" name="memMail" class="form-control editable"
 				value="<%=member.getMemMail()%>" /><span class="error"><%=errors.get("memMail")%></span></td>
 		</tr>
 		<tr>
 			<th>직업</th>
-			<td><input type="text" name="memJob" class="form-control"
+			<td><input type="text" name="memJob" class="form-control editable"
 				value="<%=member.getMemJob()%>" /><span class="error"><%=errors.get("memJob")%></span></td>
 		</tr>
 		<tr>
 			<th>취미</th>
-			<td><input type="text" name="memLike" class="form-control"
+			<td><input type="text" name="memLike" class="form-control editable"
 				value="<%=member.getMemLike()%>" /><span class="error"><%=errors.get("memLike")%></span></td>
 		</tr>
 		<tr>
 			<th>기념일명</th>
-			<td><input type="text" name="memMemorial" class="form-control"
-				value="<%=member.getMemMemorial()%>" /><span class="error"><%=errors.get("memMemorial")%></span></td>
+			<td><input type="text" name="memMemorial" class="form-control editable" value="<%=member.getMemMemorial()%>" />
+			<span class="error"><%=errors.get("memMemorial")%></span></td>
 		</tr>
 		<tr>
 			<th>기념일날짜</th>
 			<td>
-				<input type="date" name="memMemorialday"class="form-control" value="<%=member.getMemMemorialday()%>" />
+				<input type="date" name="memMemorialday"class="form-control editable" value="<%=member.getMemMemorialday()%>" />
 				<span class="error"><%=errors.get("memMemorialday")%></span>
 			</td>
 		</tr>
@@ -125,3 +124,12 @@ if (message != null && !message.isEmpty()) {
 
 	</table>
 </form>
+<%
+	if("UPDATE".equals(request.getAttribute("command"))){
+%>
+<script type="text/javascript">
+	$(":input:not(.editable)").prop("readonly",true);
+</script>
+<%
+	}
+%>

@@ -12,6 +12,15 @@ let deleteBtn = $("#deleteBtn").on("click", function() {
 
 });
 
+let updateForm = $("#updateForm");
+let updateBtn = $("#updateBtn").on("click", function() {
+	let who = $(this).data("who");
+	if (!who) return false;   //누구라고 특정이 안됨, 할일이 없는거니까 false 반환, 정지
+	updateForm.get(0).who.value = who;
+	updateForm.submit();
+
+});
+
 let viewModal = $("#exampleModal").on("hidden.bs.modal", function(event) {
 
 	//안에 들은 inner들을 다 지우라....
@@ -19,6 +28,7 @@ let viewModal = $("#exampleModal").on("hidden.bs.modal", function(event) {
 	//event를 잡아서 특정 handler 안에서 처리중임 이 방식이 EDD, 이벤트 주도형....
 	viewForm.get(0).reset();
 	deleteBtn.data("who","");
+	updateBtn.data("who","");
 
 
 }).on("show.bs.modal", function(event) {
@@ -27,6 +37,7 @@ let viewModal = $("#exampleModal").on("hidden.bs.modal", function(event) {
 
 	let who = $(dataTr).data('who');
 	deleteBtn.data("who",who);
+	updateBtn.data("who",who);
 	viewForm.find('[name=who]').val(who);
 	viewForm.submit();
 

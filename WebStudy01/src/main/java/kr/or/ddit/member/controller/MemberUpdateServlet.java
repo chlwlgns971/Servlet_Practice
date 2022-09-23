@@ -21,8 +21,8 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.member.service.ServiceResult;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/member/memberInsert.do")
-public class MemberInsertServlet extends HttpServlet {
+@WebServlet("/member/memberUpdate.do")
+public class MemberUpdateServlet extends HttpServlet {
 	MemberService service = new MemberServiceImpl();
 	
 	private void viewResolve(
@@ -42,7 +42,18 @@ public class MemberInsertServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("command", "INSERT");
+		req.setCharacterEncoding("UTF-8");
+		String memId = req.getParameter("who");
+		
+		if(StringUtils.isBlank(memId)) {
+			resp.sendError(400);
+			return;
+		}
+		
+		MemberVO member = service.retrieveMember(memId);
+		req.setAttribute("member", member);
+		req.setAttribute("command", "UPDATE");
+		
 		String commandPage = "/WEB-INF/views/member/memberForm.jsp";
 		req.setAttribute("commandPage", commandPage);
 		String viewName = "/WEB-INF/views/template.jsp";
@@ -52,46 +63,23 @@ public class MemberInsertServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		MemberVO vo = new MemberVO();
-		req.setAttribute("member", vo);
-		
-//		vo.setMemId(req.getParameter("memId"));
-//		vo.setMemPass(req.getParameter("memPass"));
-//		vo.setMemName(req.getParameter("memName"));
-//		vo.setMemRegno1(req.getParameter("memRegno1"));
-//		vo.setMemRegno2(req.getParameter("memRegno2"));
-//		vo.setMemBir(req.getParameter("memBir"));
-//		vo.setMemZip(req.getParameter("memZip"));
-//		vo.setMemAdd1(req.getParameter("memAdd1"));
-//		vo.setMemAdd2(req.getParameter("memAdd2"));
-//		vo.setMemHometel(req.getParameter("memHometel"));
-//		vo.setMemComtel(req.getParameter("memComtel"));
-//		vo.setMemHp(req.getParameter("memHp"));
-//		vo.setMemMail(req.getParameter("memMail"));
-//		vo.setMemJob(req.getParameter("memJob"));
-//		vo.setMemLike(req.getParameter("memLike"));
-//		vo.setMemMemorial(req.getParameter("memMemorial"));
-//		vo.setMemMemorialday(req.getParameter("memMemorialday"));
-//		vo.setMemMileage(0);
+		MemberVO member = new MemberVO();
+		req.setAttribute("member", member);
 		
 		try {
-			BeanUtils.populate(vo, req.getParameterMap()); //위에 주석 처리 한 부분을 vo변수명과 받는 파라미터값 이름이 동일하면 자동으로 매칭시켜 넣어줌.
+			BeanUtils.populate(member, req.getParameterMap()); //위에 주석 처리 한 부분을 vo변수명과 받는 파라미터값 이름이 동일하면 자동으로 매칭시켜 넣어줌.
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException();
 		}
 	
 		Map<String, String> errors = new HashMap<String, String>();
 		req.setAttribute("errors", errors);
-		boolean valid = validate(vo, errors);
+		boolean valid = validate(member, errors);
 		
 		String commandPage = null;
 		if(valid) {
-			ServiceResult result = service.createMember(vo);
+			ServiceResult result = service.modifyMember(member);
 			switch (result) {
-			case PKDUPLICATED:
-				req.setAttribute("message", "아이디중복");
-				commandPage = "/WEB-INF/views/member/memberForm.jsp";	
-				break;	
 			case OK:
 				commandPage = "redirect:/member/memberList.do";
 				break;

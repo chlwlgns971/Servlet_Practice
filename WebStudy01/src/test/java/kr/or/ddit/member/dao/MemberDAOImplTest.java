@@ -14,8 +14,9 @@ public class MemberDAOImplTest {
 	@Test
 	public void testInsertMember() {
 		MemberVO vo = new MemberVO();
-		vo.setMemId("z001");
+		vo.setMemId("zzz001");
 		vo.setMemPass("123456");
+		vo.setMemBir("1997-02-12");
 
 		int cnt = dao.insertMember(vo);
 		System.out.println(cnt);
@@ -31,8 +32,8 @@ public class MemberDAOImplTest {
 
 	@Test
 	public void testSelectMemberList() {
-		List<MemberVO> list = dao.selectMemberList();
-		System.out.println(list);
+//		List<MemberVO> list = dao.selectMemberList();
+//		System.out.println(list);
 		// assertNotNull(list);
 		// assertNotEquals(0, list.size());
 		// assertNotNull(list.get(0).getMemName());
@@ -40,16 +41,18 @@ public class MemberDAOImplTest {
 
 	@Test
 	public void testUpdateMember() {
-		MemberVO vo = dao.selectMember("a001");
-		int cnt = dao.updateMember(vo);
-		System.out.println(cnt);
+//		MemberVO vo = dao.selectMember("zz001");
+//		System.out.println(vo.getMemBir());
+//		System.out.println(vo.getMemMemorialday());
+//		int cnt = dao.updateMember(vo);
+//		System.out.println(cnt);
 	}
 
 	@Test
 	public void testDeleteMember() {
-		String id = "null";
-		int cnt = dao.deleteMember(id);
-		System.out.println(cnt);
+//		String id = "null";
+//		int cnt = dao.deleteMember(id);
+//		System.out.println(cnt);
 	}
 
 }
