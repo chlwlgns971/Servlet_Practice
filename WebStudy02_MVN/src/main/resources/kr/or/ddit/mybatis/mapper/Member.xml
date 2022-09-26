@@ -5,7 +5,26 @@
 		SELECT MEM_ID, MEM_NAME, MEM_MAIL, MEM_HP, MEM_ADD1, MEM_MILEAGE FROM MEMBER WHERE MEM_DELETE IS NULL
 	</select>
 	
-	<select id="selectMember" parameterType="string" resultType="MemberVO">
+	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
+		<!-- <result property="memId" column="MEM_ID"/>
+		<result property="memBir" column="mem_BIR"/> -->
+		<id property="memId" column="MEM_ID"/>
+		<collection property="prodList" ofType="ProdVO" autoMapping="true">
+			<id property="prodId" column="PROD_ID"/>
+			<association property="buyer" javaType="BuyerVO" autoMapping="true">
+				<result property="buyerName" column="BUYER_NAME"/>
+			</association>
+		</collection>
+	</resultMap>
+	
+	<select id="selectMember" parameterType="string" resultMap="memberMap">
+		WITH CARTVIEW AS(
+			SELECT DISTINCT CART_MEMBER, CART_PROD
+			FROM CART
+		), CARTPROD AS (
+			SELECT CART_MEMBER, PRODVIEW.*
+			FROM CARTVIEW INNER JOIN PRODVIEW ON(CART_PROD = PROD_ID)
+		)
 		SELECT                                                        
           MEM_ID,    MEM_PASS,    MEM_NAME,                         
           MEM_REGNO1,    MEM_REGNO2,                                
@@ -15,8 +34,10 @@
           MEM_MAIL,    MEM_JOB,    MEM_LIKE,                        
           MEM_MEMORIAL,                                             
           TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') MEM_MEMORIALDAY,   
-          MEM_MILEAGE,    MEM_DELETE                                
-      FROM    MEMBER                                                
+          MEM_MILEAGE,    MEM_DELETE  
+          ,PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE, PROD_MILEAGE
+          ,BUYER_NAME, LPROD_NM                             
+      FROM MEMBER LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)                                              
       WHERE MEM_ID = #{noname}     
 	</select>
 	
@@ -59,4 +80,24 @@
             , #{memMemorialday,jdbcType=DATE}
       )   
 	</insert>
+	
+	<update id="updateMember" parameterType="MemberVO">
+		UPDATE MEMBER SET                          
+         MEM_ZIP = #{memZip,jdbcType=VARCHAR}             
+         , MEM_ADD1 = #{memAdd1,jdbcType=VARCHAR}            
+         , MEM_ADD2 = #{memAdd2,jdbcType=VARCHAR}            
+         , MEM_HOMETEL = #{memHometel,jdbcType=VARCHAR}         
+         , MEM_COMTEL = #{memComtel,jdbcType=VARCHAR}          
+         , MEM_HP = #{memHp,jdbcType=VARCHAR}              
+         , MEM_MAIL = #{memMail,jdbcType=VARCHAR}            
+         , MEM_JOB = #{memJob,jdbcType=VARCHAR}             
+         , MEM_LIKE = #{memLike,jdbcType=VARCHAR}            
+         , MEM_MEMORIAL = #{memMemorial,jdbcType=VARCHAR}        
+         , MEM_MEMORIALDAY = TO_DATE(#{memMemorialday,jdbcType=DATE}) 
+         WHERE MEM_ID = #{memId,jdbcType=VARCHAR}  
+	</update>
+	
+	<delete id="deleteMember" parameterType="string">
+		UPDATE MEMBER SET MEM_DELETE='1' WHERE MEM_ID = #{memId}
+	</delete>
 </mapper>

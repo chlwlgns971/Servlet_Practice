@@ -16,7 +16,9 @@ public class MemberDAOImpl implements MemberDAO{
 		try(
 			SqlSession sqlSession = sqlSessionFactory.openSession();	
 		){
-			int rowcnt = sqlSession.insert("kr.or.ddit.member.dao.MemberDAO.insertMember",member);
+			//int rowcnt = sqlSession.insert("kr.or.ddit.member.dao.MemberDAO.insertMember",member);
+			MemberDAO mapper = sqlSession.getMapper(MemberDAO.class); //가짜구현체(Proxy)
+			int rowcnt = mapper.insertMember(member);
 			sqlSession.commit();
 			return rowcnt;
 		}
@@ -27,7 +29,9 @@ public class MemberDAOImpl implements MemberDAO{
 		try(
 			SqlSession sqlSession = sqlSessionFactory.openSession();	
 		){
-			return sqlSession.selectOne("kr.or.ddit.member.dao.MemberDAO.selectMember", memId);
+			//return sqlSession.selectOne("kr.or.ddit.member.dao.MemberDAO.selectMember", memId);
+			MemberDAO mapper = sqlSession.getMapper(MemberDAO.class);
+			return mapper.selectMember(memId);
 		}
 	}
 
@@ -36,20 +40,36 @@ public class MemberDAOImpl implements MemberDAO{
 		try(
 			SqlSession sqlSession = sqlSessionFactory.openSession();	
 		){
-			return sqlSession.selectList("kr.or.ddit.member.dao.MemberDAO.selectMemberList");
+			//return sqlSession.selectList("kr.or.ddit.member.dao.MemberDAO.selectMemberList");
+			MemberDAO mapper = sqlSession.getMapper(MemberDAO.class);
+			return mapper.selectMemberList();
 		}
 	}
 
 	@Override
 	public int updateMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+			SqlSession sqlSession = sqlSessionFactory.openSession();
+		){
+			//int rowcnt = sqlSession.update("kr.or.ddit.member.dao.MemberDAO.updateMember", member);
+			MemberDAO mapper = sqlSession.getMapper(MemberDAO.class);
+			int rowcnt = mapper.updateMember(member);
+			sqlSession.commit();
+			return rowcnt;
+		}
 	}
 
 	@Override
 	public int deleteMember(String memId) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+			SqlSession sqlSession = sqlSessionFactory.openSession();
+		){
+			//int rowcnt = sqlSession.delete("kr.or.ddit.member.dao.MemberDAO.deleteMember", memId);
+			MemberDAO mapper = sqlSession.getMapper(MemberDAO.class);
+			int rowcnt = mapper.deleteMember(memId);
+			sqlSession.commit();
+			return rowcnt;
+		}
 	}
 
 }
