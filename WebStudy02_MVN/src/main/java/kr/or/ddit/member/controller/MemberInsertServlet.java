@@ -26,16 +26,15 @@ public class MemberInsertServlet extends HttpServlet {
 	MemberService service = new MemberServiceImpl();
 	
 	private void viewResolve(
-		String commandPage,
+		String logicalViewName,
 		HttpServletRequest req,
 		HttpServletResponse resp
 	) throws ServletException, IOException{
-		if(commandPage.startsWith("redirect:")) {
-			commandPage = commandPage.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + commandPage);
+		if(logicalViewName.startsWith("redirect:")) {
+			logicalViewName = logicalViewName.substring("redirect:".length());
+			resp.sendRedirect(req.getContextPath() + logicalViewName);
 		}else {
-			req.setAttribute("commandPage", commandPage);
-			String viewName = "/WEB-INF/views/template.jsp";
+			String viewName = "/"+logicalViewName+".tiles";
 			req.getRequestDispatcher(viewName).forward(req, resp);
 		}
 	}
@@ -43,10 +42,8 @@ public class MemberInsertServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("command", "INSERT");
-		String commandPage = "/WEB-INF/views/member/memberForm.jsp";
-		req.setAttribute("commandPage", commandPage);
-		String viewName = "/WEB-INF/views/template.jsp";
-		req.getRequestDispatcher(viewName).forward(req, resp);
+		String logicalViewName = "member/memberForm";
+		viewResolve(logicalViewName, req, resp);
 	}
 	
 	@Override
@@ -84,27 +81,27 @@ public class MemberInsertServlet extends HttpServlet {
 		req.setAttribute("errors", errors);
 		boolean valid = validate(vo, errors);
 		
-		String commandPage = null;
+		String logicalViewName = null;
 		if(valid) {
 			ServiceResult result = service.createMember(vo);
 			switch (result) {
 			case PKDUPLICATED:
 				req.setAttribute("message", "아이디중복");
-				commandPage = "/WEB-INF/views/member/memberForm.jsp";	
+				logicalViewName = "member/memberForm";	
 				break;	
 			case OK:
-				commandPage = "redirect:/member/memberList.do";
+				logicalViewName = "redirect:/member/memberList.do";
 				break;
 
 			default:
 				req.setAttribute("message", "서버오류");
-				commandPage = "/WEB-INF/views/member/memberForm.jsp";
+				logicalViewName = "member/memberForm";
 				break;
 			}
 		}else {
-			commandPage = "/WEB-INF/views/member/memberForm.jsp";
+			logicalViewName = "member/memberForm";
 		}
-		viewResolve(commandPage, req, resp);
+		viewResolve(logicalViewName, req, resp);
 	}
 	
 	//Hibernate Validator

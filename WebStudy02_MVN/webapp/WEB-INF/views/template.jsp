@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <!doctype html>
 <html>
 	<head>
@@ -10,9 +11,10 @@
 		<meta name="generator" content="Hugo 0.88.1">
 		<meta name="theme-color" content="#7952b3">
 
-		<title>Dashboard Template · Bootstrap v5.1</title>
+		<title><tiles:getAsString name="title" /></title>
 		
-		<jsp:include page="/includee/preScript.jsp" />
+		<%-- <jsp:include page="/includee/preScript.jsp" /> --%>
+		<tiles:insertAttribute name="preScript" />
 		
 		<style>
 			.bd-placeholder-img {
@@ -35,18 +37,17 @@
 	</head>
 	<body class="d-flex flex-column vh-100">
 		<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-			<jsp:include page="/includee/headerMenu.jsp" />
+			<tiles:insertAttribute name="headerMenu" />
 		</header>
 	
 		<div class="container-fluid">
 			<div class="row">
-				<jsp:include page="/includee/leftMenu.jsp" />
+				<tiles:insertAttribute name="leftMenu" />
 				<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<!-- Main Content Area start -->
 						<div class="border border-primary">
-							<%--  <jsp:include page='<%=(String)request.getAttribute("commandPage") %>' />--%>
-							INDEX
+							<tiles:insertAttribute name="main" />
 						</div>
 					<!-- Main Content Area end -->
 					</div>
@@ -55,9 +56,8 @@
 		</div>
 	
 		<footer class="footer mt-auto py-3 bg-dark col-md-9 ms-sm-auto col-lg-10">
-			<jsp:include page="/includee/footer.jsp" />
+			<tiles:insertAttribute name="footer" />
 		</footer>
-		
-		<jsp:include page="/includee/postScript.jsp" />
+		<tiles:insertAttribute name="postScript" />
 	</body>
 </html>

@@ -16,20 +16,23 @@ public class ProdDAOImplTest {
 
 	@Test
 	public void testInsertProd() {
-		ProdVO prod = new ProdVO();
-		prod.setProdId("P302000024");
-		prod.setProdName("핸드크림");
-		prod.setProdLgu("P302");
-		log.info("prod : {}",prod);
+//		ProdVO prod = new ProdVO();
+//		prod.setProdId("P302000024");
+//		prod.setProdName("핸드크림");
+//		prod.setProdLgu("P302");
+//		prod.setProdBuyer("제로스킨");
+//		int rowcnt = dao.insertProd(prod);
+//		log.info("prod : {}",prod);
+//		log.info("rowcnt : {}",rowcnt);
 	}
 
 	@Test
 	public void testSelectProd() {
-		ProdVO prod = dao.selectProd("sdfasdasdf");
-		assertNull(prod);
-		prod = dao.selectProd("P101000001");
-		assertNotNull(prod);
-		log.info("prod: {}", prod);
+//		ProdVO prod = dao.selectProd("sdfasdasdf");
+//		assertNull(prod);
+//		prod = dao.selectProd("P101000001");
+//		assertNotNull(prod);
+//		log.info("prod: {}", prod);
 	}
 
 	@Test

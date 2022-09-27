@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd" >
+<tiles-definitions>
+	<definition name="parent" template="/WEB-INF/views/template.jsp">
+		<put-attribute name="title" value="Company403" />
+		<put-attribute name="preScript" value="/includee/preScript.jsp" />
+		<put-attribute name="headerMenu" value="/includee/headerMenu.jsp" />
+		<put-attribute name="leftMenu" value="/includee/leftMenu.jsp" />
+		
+		<put-attribute name="main" value="/WEB-INF/views/index.jsp" />
+		
+		<put-attribute name="footer" value="/includee/footer.jsp" />
+		<put-attribute name="postScript" value="/includee/postScript.jsp" />
+	</definition>
+	
+	<!-- extends를 통해 부모를 상속받을 수 있음 -->
+	<definition name="index" extends="parent">	
+		<put-attribute name="main" value="/WEB-INF/views/index.jsp" />
+	</definition>
+	
+	<definition name="member/*" extends="parent" preparer="kr.or.ddit.member.view.MemberViewPreparer">
+		<put-attribute name="main" value="/WEB-INF/views/member/{1}.jsp" />
+	</definition>
+	<definition name="prod/*" extends="parent" preparer="kr.or.ddit.member.view.ProdViewPreparer">
+		<put-attribute name="main" value="/WEB-INF/views/prod/{1}.jsp" />
+	</definition>
+</tiles-definitions>

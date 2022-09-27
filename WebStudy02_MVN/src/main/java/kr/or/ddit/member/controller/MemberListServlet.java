@@ -33,9 +33,8 @@ public class MemberListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<MemberVO> list = service.retrieveMemberList();
 		req.setAttribute("memberList", list);
-		String commandPage = "/WEB-INF/views/member/memberList.jsp";
-		req.setAttribute("commandPage", commandPage);
-		String viewName = "/WEB-INF/views/template.jsp";
+
+		String viewName = "/member/memberList.tiles";
 		req.getRequestDispatcher(viewName).forward(req, resp);
 	}
 }
