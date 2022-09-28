@@ -21,7 +21,7 @@
 			<table>
 				<tr>
 					<th>거래처명</th>
-					<td><%=prod.getBuyer().getBuyerName() %></td>
+					<td>${prod.buyer['buyerName'] }</td>
 				</tr>
 				<tr>
 					<th>소재지</th>

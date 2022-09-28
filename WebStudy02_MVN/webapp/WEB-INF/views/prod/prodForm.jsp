@@ -19,16 +19,16 @@
 			<th>상품코드</th>
 			<td>
 				<input type="text" name="prodId" class="form-control"
-				required value="<%=prod.getProdId()%>" />
-				<span class="error"><%=errors.get("prodId")%></span>
+				required value="${prod['prodId'] }" />
+				<span class="error">${errors['prodId'] }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>상품명</th>
 			<td>
 				<input type="text" name="prodName" class="form-control"
-				required value="<%=prod.getProdName()%>" />
-				<span class="error"><%=errors.get("prodName")%></span>
+				required value="${prod['prodName'] }" />
+				<span class="error">${errors['prodName'] }</span>
 			</td>
 		</tr>
 		<tr>
@@ -44,8 +44,9 @@
 				<%
 					List<Map<String,Object>> lprodList = (List) request.getAttribute("lprodList");
 					for(Map<String,Object> lprod : lprodList){
+						pageContext.setAttribute("lprod", lprod);
 						%>
-						<option value="<%=lprod.get("lprodGu")%>"><%=lprod.get("lprodNm") %></option>
+						<option value="${lprod['lprodGu']}">${lprod['lprodNm']}</option>
 						<%						
 					}
 				%>
@@ -65,16 +66,17 @@
 				<%
 					List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
 					for(BuyerVO buyer : buyerList){
+						pageContext.setAttribute("buyer", buyer);
 						%>
-						<option value="<%=buyer.getBuyerId() %>" class="<%=buyer.getBuyerLgu()%>">
-							<%=buyer.getBuyerName() %>
+						<option value="${buyer['buyerId']}" class="${buyer['buyerLgu']}">
+							${buyer['buyerName'] }
 						</option>
 						<%						
 					}
 				%>
 				</select>
 				
-				<span class="error"><%=errors.get("prodBuyer")%></span>
+				<span class="error">${errors['prodBuyer'] }</span>
 			</td>
 		</tr>
 		<tr>

@@ -2,52 +2,56 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <table class="table table-bordered">
-   <thead>
-      <tr>
-         <th>회원아이디</th>
-         <th>회원명</th>
-         <th>이메일</th>
-         <th>휴대폰</th>
-         <th>지역</th>
-         <th>마일리지</th>
-      </tr>
-   </thead>
-   <tbody>
-      <%
-         List<MemberVO> memberList = (List) request.getAttribute("memberList");
-         if(memberList.isEmpty()){
-            %>
-            <tr>
-               <td colspan="6">회원이 없음.</td>
-            </tr>
-            <%
-         }else{
-            for(MemberVO member : memberList){
-               %>
-               <tr data-who="<%=member.getMemId() %>" 
-                     data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <td><%=member.getMemId() %></td>
-                  <td><%=member.getMemName() %></td>
-                  <td><%=member.getMemMail() %></td>
-                  <td><%=member.getMemHp() %></td>
-                  <td><%=member.getMemAdd1() %></td>
-                  <td><%=member.getMemMileage() %></td>
-               </tr>
-               <%
-            }
-         }
-      %>
-   
-   </tbody>
+	<thead>
+      	<tr>
+         	<th>회원아이디</th>
+         	<th>회원명</th>
+         	<th>이메일</th>
+         	<th>휴대폰</th>
+         	<th>지역</th>
+         	<th>마일리지</th>
+      	</tr>
+   	</thead>
+   	<tbody>
+   		<c:set var="memberList" value="${pagingVO.dataList }" />
+   	  	<c:choose>
+   	  	 	<c:when test="${empty memberList }">
+   	  	 		<tr><td colspan="6">회원이 없음.</td></tr>
+   	  	 	</c:when>
+   	  	 	<c:otherwise>
+   	  	 		<c:forEach var="member" items="${ memberList}">
+   	  	 			<tr data-who="${member['memId'] }" data-bs-toggle="modal" data-bs-target="#exampleModal">
+   	  	 				<td>${member['memId'] }</td>
+                  		<td>${member['memName'] }</td>
+                  		<td>${member['memMail'] }</td>
+                  		<td>${member['memHp'] }</td>
+                  		<td>${member['memAdd1'] }</td>
+                  		<td>${member['memMileage'] }</td>
+   	  	 			</tr>
+   	  	 		</c:forEach>
+   	  	 	</c:otherwise>
+   	  	</c:choose>
+   	</tbody>
+   	<tfoot>
+   		<tr>
+   			<td colspan="7">
+   				${pagingVO.getPagingHTML() }
+   			</td>
+   		</tr>
+   	</tfoot>
 </table>
-<form id='viewForm' action="<%=request.getContextPath() %>/member/memberView.do">
+<c:url value="/member/memberView.do" var="memberView" />
+<c:url value="/member/memberDelete.do" var="memberDelete" />
+<c:url value="/member/memberUpdate.do" var="memberUpdate" />
+<form id='viewForm' action="${memberView }">
    <input type='hidden' name='who'  />
 </form>
-<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
+<form id="deleteForm" action="${memberDelete }" method="post">
    <input type='hidden' name='who'  />
 </form>
-<form id="updateForm" action="<%=request.getContextPath() %>/member/memberUpdate.do" method="get">
+<form id="updateForm" action="${memberUpdate }" method="get">
    <input type='hidden' name='who'  />
 </form>
 <!-- Modal -->

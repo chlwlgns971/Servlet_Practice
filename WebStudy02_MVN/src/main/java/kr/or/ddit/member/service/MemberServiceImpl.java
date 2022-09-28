@@ -5,8 +5,8 @@ import java.util.List;
 import kr.or.ddit.commons.exception.UserNotFoundException;
 import kr.or.ddit.member.dao.MemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
-import kr.or.ddit.member.dao.MemberDAOImpl_bak;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 public class MemberServiceImpl implements MemberService {
 	
@@ -33,9 +33,13 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
+	public int retrieveMemberCount(PagingVO pagingVO){
+		return dao.selectTotalRecord(pagingVO);
+	}
+	
 	@Override
-	public List<MemberVO> retrieveMemberList() {
-		return dao.selectMemberList();
+	public List<MemberVO> retrieveMemberList(PagingVO pagingVO) {
+		return dao.selectMemberList(pagingVO);
 	}
 
 	@Override

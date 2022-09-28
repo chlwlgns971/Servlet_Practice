@@ -56,4 +56,8 @@ public class MemberVO implements Serializable {
 	private Integer memMileage;
 	
 	private List<ProdVO> prodList; //has Many
+	
+	public String getMemTest() {
+		return "테스트";
+	}
 }

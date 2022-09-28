@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 /**
  * /member (GET) /member/a001 (GET) /member/a001 (PUT) /member/a001 (DELETE)
@@ -31,8 +34,22 @@ public class MemberListServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<MemberVO> list = service.retrieveMemberList();
-		req.setAttribute("memberList", list);
+		req.setCharacterEncoding("utf-8");
+	      
+		String pageParam = req.getParameter("page");
+		int currentPage = 1;
+		if(StringUtils.isNumeric(pageParam)) {
+			//여기들ㄹ어오면 안전하게 파싱 가능!
+			currentPage = Integer.parseInt(pageParam);
+		}
+		PagingVO<MemberVO> pagingVO = new PagingVO<>(3,2);
+		pagingVO.setCurrentPage(currentPage);
+		int totalRecod = service.retrieveMemberCount(pagingVO);
+		pagingVO.setTotalRecord(totalRecod);
+		List<MemberVO> memberList = service.retrieveMemberList(pagingVO);
+		pagingVO.setDataList(memberList);
+		req.setAttribute("memberList", memberList);
+		req.setAttribute("pagingVO", pagingVO);
 
 		String viewName = "/member/memberList.tiles";
 		req.getRequestDispatcher(viewName).forward(req, resp);
