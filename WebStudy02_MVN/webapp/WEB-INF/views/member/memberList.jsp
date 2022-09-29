@@ -37,7 +37,18 @@
    	<tfoot>
    		<tr>
    			<td colspan="7">
-   				${pagingVO.getPagingHTML() }
+   				<div class="pagingArea">
+   					${pagingVO.getPagingHTML() }
+   				</div>
+   				<div id="searchUI">
+					<select name="searchType">
+						<option value>전체</option>
+						<option value="name">이름</option>
+						<option value="address">지역</option>
+					</select>
+					<input type="text" name="searchWord" />
+					<input type="button" value="검색" id="searchBtn" />
+				</div>
    			</td>
    		</tr>
    	</tfoot>
@@ -45,6 +56,11 @@
 <c:url value="/member/memberView.do" var="memberView" />
 <c:url value="/member/memberDelete.do" var="memberDelete" />
 <c:url value="/member/memberUpdate.do" var="memberUpdate" />
+<form id="searchForm">
+	<input type="text" name="page" />
+	<input type="text" name="searchType" />
+	<input type="text" name="searchWord" />
+</form>
 <form id='viewForm' action="${memberView }">
    <input type='hidden' name='who'  />
 </form>
@@ -74,5 +90,28 @@
   </div>
 </div>
 <script type="text/javascript" src='<%=request.getContextPath() %>/resources/js/member/memberList.js'></script>
+<script type="text/javascript">
+	let searchUI = $("#searchUI").on("click", "#searchBtn", function(event){
+		let inputTags = searchUI.find(":input[name]");
+		$.each(inputTags, function(index, inputTag){
+			let name = $(this).attr("name");
+			let value = $(this).val();
+			searchForm.get(0)[name].value = value;
+		});
+		searchForm.submit();
+	});
+	let searchForm = $("#searchForm");
+	let pageTag = $("[name=page]");
+	$("[name=searchType]").val("${pagingVO.simpleCondition.searchType}");
+	$("[name=searchWord]").val("${pagingVO.simpleCondition.searchWord}");
+	$(".pagingArea").on("click", "a", function(event){
+		event.preventDefault();
+		let page = $(this).data("page");
+		if(!page) return false;
+		pageTag.val(page);
+		searchForm.submit();
+		return false;
+});
+</script>
 
 	

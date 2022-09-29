@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.mybatis.CustomSqlSessionFactoryBuilder;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdDAOImpl implements ProdDAO {
@@ -37,13 +38,13 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 
 	@Override
-	public List<ProdVO> selectProdList() {
+	public List<ProdVO> selectProdList(PagingVO pagingVO) {
 		// 상품아이디, 상품명, 판매가, 구매가, 마일리지. + 분류명, 거래처명, 해당 상품의 구매자수
 		try(
 			SqlSession sqlSession = sqlSessionFactory.openSession();
 		){
 			ProdDAO mapper = sqlSession.getMapper(ProdDAO.class);
-			return mapper.selectProdList();
+			return mapper.selectProdList(pagingVO);
 		}
 	}
 
@@ -56,6 +57,16 @@ public class ProdDAOImpl implements ProdDAO {
 			int rowcnt = mapper.updateProd(prod);
 			sqlSession.commit();
 			return rowcnt;
+		}
+	}
+
+	@Override
+	public int selectTotalRecord(PagingVO pagingVO) {
+		try(
+			SqlSession sqlSession = sqlSessionFactory.openSession();
+		){
+			ProdDAO mapper = sqlSession.getMapper(ProdDAO.class);
+			return mapper.selectTotalRecord(pagingVO);
 		}
 	}
 

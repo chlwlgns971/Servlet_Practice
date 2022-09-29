@@ -19,7 +19,28 @@
 		</collection>
 	</resultMap> -->
 	
-	<select id="selectProdList" resultMap="prodListMap">
+	<sql id="searchFrag">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="detailCondition neq null">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodLgu)">
+					AND PROD_LGU = #{detailCondition.prodLgu}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodBuyer)">
+					AND PROD_BUYER = #{detailCondition.prodBuyer}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailCondition.prodName)">
+					AND INSTR(PROD_NAME, #{detailCondition.prodName}) > 0
+				</if>
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
+		SELECT COUNT(*)
+		FROM PRODVIEW 
+		<include refid="searchFrag" />
+	</select>
+	<select id="selectProdList" resultMap="prodListMap" parameterType="PagingVO">
 		SELECT PROD_ID, PROD_NAME, PROD_PRICE
 		    , PROD_COST, PROD_MILEAGE
 		    , BUYER_NAME
@@ -29,7 +50,14 @@
 		        FROM CART
 		        WHERE PROD_ID = CART_PROD
 		    ) MEM_COUNT
-		FROM PRODVIEW
+		FROM (
+			SELECT P.*, ROWNUM RNUM
+			FROM PRODVIEW P
+			<include refid="searchFrag" />
+		)
+		<![CDATA[
+		WHERE RNUM >= #{startRow} AND RNUM <=#{endRow}
+		]]>
 	</select>
 	
 	<select id="selectProd" parameterType="string" resultMap="prodMap" >

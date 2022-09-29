@@ -2,6 +2,7 @@ package kr.or.ddit.prod.dao;
 
 import java.util.List;
 
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 /**
@@ -19,11 +20,12 @@ public interface ProdDAO {
 	 */
 	public ProdVO selectProd(String prodId);
 	
+	public int selectTotalRecord(PagingVO pagingVO);
 	/**
 	 * 상품 아이디, 상품명, 판매가, 구매가, 마일리지. +분류명, 거래처명
 	 * @return
 	 */
-	public List<ProdVO> selectProdList();
+	public List<ProdVO> selectProdList(PagingVO pagingVO);
 	
 	public int updateProd(ProdVO prod);
 	

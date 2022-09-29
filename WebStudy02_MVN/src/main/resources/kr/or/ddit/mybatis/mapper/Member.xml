@@ -4,9 +4,26 @@
 
 	<sql id="seachFrag">
 		WHERE MEM_DELETE IS NULL
+		<trim prefix="AND (" suffix=")">
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+				<choose>
+					<when test="'name' eq simpleCondition.searchType">
+						INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+					</when>
+					<when test="'address' eq simpleCondition.searchType">
+						INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+					</when>
+					<otherwise>
+						INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+						OR
+						INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
 	</sql>
 
-	<select id="selectTotalRecord" resultType="int">
+	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
 		SELECT COUNT(*)
 		FROM MEMBER 
 		<include refid="seachFrag" />

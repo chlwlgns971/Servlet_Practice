@@ -15,6 +15,7 @@ import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 
 /**
  * /member (GET) /member/a001 (GET) /member/a001 (PUT) /member/a001 (DELETE)
@@ -35,6 +36,9 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
+		String searchType = req.getParameter("searchType");
+		String searchWord = req.getParameter("searchWord");
+		SearchVO simpleCondition = new SearchVO(searchType, searchWord);
 	      
 		String pageParam = req.getParameter("page");
 		int currentPage = 1;
@@ -44,10 +48,14 @@ public class MemberListServlet extends HttpServlet {
 		}
 		PagingVO<MemberVO> pagingVO = new PagingVO<>(3,2);
 		pagingVO.setCurrentPage(currentPage);
+		pagingVO.setSimpleCondition(simpleCondition);
+		
 		int totalRecod = service.retrieveMemberCount(pagingVO);
 		pagingVO.setTotalRecord(totalRecod);
+		
 		List<MemberVO> memberList = service.retrieveMemberList(pagingVO);
 		pagingVO.setDataList(memberList);
+		
 		req.setAttribute("memberList", memberList);
 		req.setAttribute("pagingVO", pagingVO);
 
