@@ -1,6 +1,7 @@
 package kr.or.ddit.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,4 +23,12 @@ public class BuyerVO implements Serializable {
 	private String buyerMail;
 	private String buyerCharger;
 	private String buyerTelext;
+
+	//해당 거래처와의 거래 품목 수.
+	private int prodCount;
+	
+	//해당 거래처와의 거래 품목 리스트.
+	private List<ProdVO> prodList;
+	
+	
 }

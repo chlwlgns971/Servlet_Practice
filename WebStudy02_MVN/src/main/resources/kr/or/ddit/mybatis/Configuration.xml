@@ -26,5 +26,6 @@
 		<mapper resource="kr/or/ddit/mybatis/mapper/Member.xml"/>
 		<mapper resource="kr/or/ddit/mybatis/mapper/Prod.xml"/>
 		<mapper resource="kr/or/ddit/mybatis/mapper/Others.xml"/>
+		<mapper resource="kr/or/ddit/mybatis/mapper/Buyer.xml"/>
 	</mappers>
 </configuration>

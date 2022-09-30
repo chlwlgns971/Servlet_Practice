@@ -24,4 +24,7 @@
 	<definition name="prod/*" extends="parent" preparer="kr.or.ddit.member.view.ProdViewPreparer">
 		<put-attribute name="main" value="/WEB-INF/views/prod/{1}.jsp" />
 	</definition>
+	<definition name="buyer/*" extends="parent" preparer="kr.or.ddit.member.view.BuyerViewPreparer">
+		<put-attribute name="main" value="/WEB-INF/views/buyer/{1}.jsp" />
+	</definition>
 </tiles-definitions>

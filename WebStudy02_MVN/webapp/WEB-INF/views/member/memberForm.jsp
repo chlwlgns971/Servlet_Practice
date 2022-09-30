@@ -11,7 +11,7 @@
 		<tr>
 			<th>회원ID</th>
 			<td>
-				<input type="text" name="memId" class="form-control" required value="${member['memId'] }" />
+				<input type="text" name="memId" class="form-control" value="${member['memId'] }" />
 				<span class="error">${errors['memId'] }</span>
 			</td>
 		</tr>

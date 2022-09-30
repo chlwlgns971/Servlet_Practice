@@ -13,7 +13,7 @@ import kr.or.ddit.prod.service.ProdServiceImpl;
 import kr.or.ddit.vo.ProdVO;
 
 @WebServlet("/prod/prodView.do")
-public class ProdServlet extends HttpServlet{
+public class ProdViewServlet extends HttpServlet{
 	ProdService service = new ProdServiceImpl();
 	private void viewResolve(
 			String logicalViewName,

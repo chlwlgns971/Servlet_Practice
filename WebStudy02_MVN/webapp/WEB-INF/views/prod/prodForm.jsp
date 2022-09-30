@@ -5,208 +5,172 @@
 <%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	ProdVO prod = (ProdVO) request.getAttribute("prod");
-	if(prod==null)
-		prod = new ProdVO();
-	Map<String,String> errors = (Map) request.getAttribute("errors");
-	if(errors==null)
-			errors = new HashMap<>();
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <form method="post">      
+	<input type="hidden" name="prodId" value="${prod.prodId }" />
 	<table class="table table-bordered">
-		<tr>
-			<th>상품코드</th>
-			<td>
-				<input type="text" name="prodId" class="form-control"
-				required value="${prod['prodId'] }" />
-				<span class="error">${errors['prodId'] }</span>
-			</td>
-		</tr>
 		<tr>
 			<th>상품명</th>
 			<td>
-				<input type="text" name="prodName" class="form-control"
-				required value="${prod['prodName'] }" />
-				<span class="error">${errors['prodName'] }</span>
+				<input type="text" name="prodName" class="form-control" value="${prod.prodName }" />
+				<span class="error">${errors.prodName }</span>
 			</td>
 		</tr>
 		<tr>
 			<th class="fst-italic text-danger">분류코드</th>
 			<td>
-				<%--
-				<input type="text" name="prodLgu" class="form-control"
-				required value="<%=prod.getProdLgu()%>" />
-				--%>
-				
-				<select name="prodLgu" required class="form-control">
+				<select name="prodLgu"  class="form-control">
 					<option value>상품분류</option>
-				<%
-					List<Map<String,Object>> lprodList = (List) request.getAttribute("lprodList");
-					for(Map<String,Object> lprod : lprodList){
-						pageContext.setAttribute("lprod", lprod);
-						%>
-						<option value="${lprod['lprodGu']}">${lprod['lprodNm']}</option>
-						<%						
-					}
-				%>
+					<c:forEach items="${lprodList }" var="lprod">
+						<option value="${lprod.lprodGu }">${lprod.lprodNm }</option>
+					</c:forEach>
 				</select>
-				<span class="error"><%=errors.get("prodLgu")%></span>
+				<span class="error">${errors.prodLgu }</span>
 			</td>
 		</tr>
 		<tr>
 			<th class="fst-italic text-danger">거래처코드</th>
 			<td>
-				<%--
-				<input type="text" name="prodBuyer" class="form-control"
-				required value="<%=prod.getProdBuyer()%>" />
-				--%>
-				<select name="prodBuyer" required class="form-control">
+				<select name="prodBuyer"  class="form-control">
 					<option value>거래처</option>
-				<%
-					List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
-					for(BuyerVO buyer : buyerList){
-						pageContext.setAttribute("buyer", buyer);
-						%>
-						<option value="${buyer['buyerId']}" class="${buyer['buyerLgu']}">
-							${buyer['buyerName'] }
+					<c:forEach items="${buyerList }" var="buyer">
+						<option value="${buyer.buyerId }" class="${buyer.buyerLgu }">
+							${buyer.buyerName }
 						</option>
-						<%						
-					}
-				%>
+					</c:forEach>
 				</select>
 				
-				<span class="error">${errors['prodBuyer'] }</span>
+				<span class="error">${errors.prodBuyer }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>구매가</th>
 			<td>
 				<input type="number" name="prodCost" class="form-control"
-				required value="<%=prod.getProdCost()%>" />
-				<span class="error"><%=errors.get("prodCost")%></span>
+				 value="${prod.prodCost }" />
+				<span class="error">${errors.prodCost }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>판매가</th>
 			<td>
 				<input type="number" name="prodPrice" class="form-control"
-				required value="<%=prod.getProdPrice()%>" />
-				<span class="error"><%=errors.get("prodPrice")%></span>
+				 value="${prod.prodPrice }" />
+				<span class="error">${errors.prodPrice }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>세일가</th>
 			<td>
 				<input type="number" name="prodSale" class="form-control"
-				required value="<%=prod.getProdSale()%>" />
-				<span class="error"><%=errors.get("prodSale")%></span>
+				 value="${prod.prodSale }" />
+				<span class="error">${errors.prodSale }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>개요</th>
 			<td>
 				<input type="text" name="prodOutline" class="form-control"
-				required value="<%=prod.getProdOutline()%>" />
-				<span class="error"><%=errors.get("prodOutline")%></span>
+				 value="${prod.prodOutline }" />
+				<span class="error">${errors.prodOutline }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>상세정보</th>
 			<td>
 				<input type="text" name="prodDetail" class="form-control"
-				value="<%=prod.getProdDetail()%>" />
-				<span class="error"><%=errors.get("prodDetail")%></span>
+				value="${prod.prodDetail }" />
+				<span class="error">${errors.prodDetail }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>상품이미지</th>
 			<td>
 				<input type="text" name="prodImg" class="form-control"
-				required value="<%=prod.getProdImg()%>" />
-				<span class="error"><%=errors.get("prodImg")%></span>
+				 value="${prod.prodImg }" />
+				<span class="error">${errors.prodImg }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>총재고</th>
 			<td>
 				<input type="number" name="prodTotalstock"
-				class="form-control" required value="<%=prod.getProdTotalstock()%>" />
+				class="form-control"  value="${prod.prodTotalstock }" />
 				<span
-				class="error"><%=errors.get("prodTotalstock")%></span>
+				class="error">${errors.prodTotalstock }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>입고일</th>
 			<td>
 				<input type="date" name="prodInsdate" class="form-control"
-				value="<%=prod.getProdInsdate()%>" />
-				<span class="error"><%=errors.get("prodInsdate")%></span>
+				value="${prod.prodInsdate }" />
+				<span class="error">${errors.prodInsdate }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>적정재고</th>
 			<td>
 				<input type="number" name="prodProperstock"
-				class="form-control" required value="<%=prod.getProdProperstock()%>" />
+				class="form-control"  value="${prod.prodProperstock }" />
 				<span
-				class="error"><%=errors.get("prodProperstock")%></span>
+				class="error">${errors.prodProperstock }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>크기</th>
 			<td>
 				<input type="text" name="prodSize" class="form-control"
-				value="<%=prod.getProdSize()%>" />
-				<span class="error"><%=errors.get("prodSize")%></span>
+				value="${prod.prodSize }" />
+				<span class="error">${errors.prodSize }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>색상</th>
 			<td>
 				<input type="text" name="prodColor" class="form-control"
-				value="<%=prod.getProdColor()%>" />
-				<span class="error"><%=errors.get("prodColor")%></span>
+				value="${prod.prodColor }" />
+				<span class="error">${errors.prodColor }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>배송방법</th>
 			<td>
 				<input type="text" name="prodDelivery" class="form-control"
-				value="<%=prod.getProdDelivery()%>" />
-				<span class="error"><%=errors.get("prodDelivery")%></span>
+				value="${prod.prodDelivery }" />
+				<span class="error">${errors.prodDelivery }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>단위</th>
 			<td>
 				<input type="text" name="prodUnit" class="form-control"
-				value="<%=prod.getProdUnit()%>" />
-				<span class="error"><%=errors.get("prodUnit")%></span>
+				value="${prod.prodUnit }" />
+				<span class="error">${errors.prodUnit }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>입고량</th>
 			<td>
 				<input type="number" name="prodQtyin" class="form-control"
-				value="<%=prod.getProdQtyin()%>" />
-				<span class="error"><%=errors.get("prodQtyin")%></span>
+				value="${prod.prodQtyin }" />
+				<span class="error">${errors.prodQtyin }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>판매량</th>
 			<td>
 				<input type="number" name="prodQtysale" class="form-control"
-				value="<%=prod.getProdQtysale() %>" />
-				<span class="error"><%=errors.get("prodQtysale") %></span>
+				value="${prod.prodQtysale }" />
+				<span class="error">${errors.prodQtysale }</span>
 			</td>
 		</tr>
 		<tr>
 			<th>마일리지</th>
 			<td>
 				<input type="number" name="prodMileage" class="form-control"
-				value="<%=prod.getProdMileage() %>" />
-				<span class="error"><%=errors.get("prodMileage") %></span>
+				value="${prod.prodMileage }" />
+				<span class="error">${errors.prodMileage }</span>
 			</td>
 		</tr>
 		<tr>
@@ -224,5 +188,5 @@
 			prodBuyerTag.find("option:first").show();
 			prodBuyerTag.find("option:not(."+lgu+")").hide();
 		});
-	</script>
+	</script> /
 </form>
