@@ -37,8 +37,8 @@ public class ProdDAOImplTest {
 
 	@Test
 	public void testSelectProdList() {
-		List<ProdVO> prodList = dao.selectProdList();
-		log.info("prodList: {}", prodList);
+//		List<ProdVO> prodList = dao.selectProdList();
+//		log.info("prodList: {}", prodList);
 	}
 
 	@Test

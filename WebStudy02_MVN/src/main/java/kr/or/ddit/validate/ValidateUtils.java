@@ -32,8 +32,7 @@ public class ValidateUtils<T> {
 	}
 	
 	public Map<String, String> validate(T target, Class...groups) {
-		Set<ConstraintViolation<T>> violations = 
-				validator.validate(target, groups);
+		Set<ConstraintViolation<T>> violations = validator.validate(target, groups);
 		Map<String, String> errors = new HashMap<>();
 		for(ConstraintViolation violation : violations) {
 			String propertyName = violation.getPropertyPath().toString();

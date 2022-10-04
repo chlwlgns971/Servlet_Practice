@@ -29,11 +29,7 @@ public class ProdUpdateServlet extends HttpServlet{
 	private ProdService service = new ProdServiceImpl();
 	private OthersDAO othersDAO = new OthersDAOImpl();
 	
-	private void viewResolve(
-			String logicalViewName,
-			HttpServletRequest req,
-			HttpServletResponse resp
-		) throws ServletException, IOException{
+	private void viewResolve(String logicalViewName, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		if(logicalViewName.startsWith("redirect:")) {
 			logicalViewName = logicalViewName.substring("redirect:".length());
 			resp.sendRedirect(req.getContextPath() + logicalViewName);

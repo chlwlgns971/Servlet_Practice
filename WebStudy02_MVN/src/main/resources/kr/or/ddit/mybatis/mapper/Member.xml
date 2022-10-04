@@ -75,7 +75,7 @@
           MEM_MAIL,    MEM_JOB,    MEM_LIKE,                        
           MEM_MEMORIAL,                                             
           TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') MEM_MEMORIALDAY,   
-          MEM_MILEAGE,    MEM_DELETE  
+          MEM_MILEAGE,    MEM_DELETE	,MEM_ROLE
           ,PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE, PROD_MILEAGE
           ,BUYER_NAME, LPROD_NM                             
       FROM MEMBER LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)                                              

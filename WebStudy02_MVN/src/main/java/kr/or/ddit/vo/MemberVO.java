@@ -87,6 +87,8 @@ public class MemberVO implements Serializable {
 	
 	private List<ProdVO> prodList; //has Many
 	
+	private String memRole;
+	
 	public String getMemTest() {
 		return "테스트";
 	}
