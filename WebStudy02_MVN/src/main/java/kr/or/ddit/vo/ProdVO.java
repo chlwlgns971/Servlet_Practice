@@ -1,8 +1,12 @@
 package kr.or.ddit.vo;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
+import javax.servlet.http.Part;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,6 +14,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import kr.or.ddit.file.MultipartFile;
 import kr.or.ddit.validate.UpdateGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,6 +56,20 @@ public class ProdVO implements Serializable{
 	private transient String prodDetail;
 	@NotBlank
 	private String prodImg;
+	
+	private MultipartFile prodImage;
+	public void setProdImage(MultipartFile prodImage) {
+		if(prodImage!=null && prodImage.isEmpty()) {
+			this.prodImage = prodImage;
+			this.prodImg = UUID.randomUUID().toString();
+		}
+	}
+	public void saveTo(File saveFolder) throws IOException {
+		if(prodImage == null) return;
+		File saveFile = new File(saveFolder, this.prodImg);
+		prodImage.transferTo(saveFile);
+	}
+	
 	@NotNull
 	@Min(0)
 	private Integer prodTotalstock;

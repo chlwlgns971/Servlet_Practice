@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<form method="post">      
+<form method="post" enctype="multipart/form-data">      
 	<input type="hidden" name="prodId" value="${prod.prodId }" />
 	<table class="table table-bordered">
 		<tr>
@@ -86,9 +86,8 @@
 		<tr>
 			<th>상품이미지</th>
 			<td>
-				<input type="text" name="prodImg" class="form-control"
-				 value="${prod.prodImg }" />
-				<span class="error">${errors.prodImg }</span>
+				<input type="file" name="prodImage" class="form-control editable" required />
+				<span class="error">${errors.prodImage }</span>
 			</td>
 		</tr>
 		<tr>

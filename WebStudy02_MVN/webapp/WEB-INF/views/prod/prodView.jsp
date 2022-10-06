@@ -62,7 +62,7 @@
 	</tr>
 	<tr>
 		<th>상품이미지</th>
-		<td>${prod.prodImg }</td>
+		<td><img src='<c:url value="/resources/prodImages/${prod.prodImg }" />'></td>
 	</tr>
 	<tr>
 		<th>총재고</th>

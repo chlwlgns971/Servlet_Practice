@@ -43,7 +43,6 @@ public class MemberUpdateServlet_test extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//이이디로 요청이 들어오면 해당 회원 정보를 검색하여 객체에 담고 forward방식으로 form페이지로 보내줘야 함. 그리고 form에서 post로 요청이 들어오면 update실행
-		req.setCharacterEncoding("UTF-8");
 		String memId = req.getParameter("who");
 		MemberVO member = service.retrieveMember(memId);
 		req.setAttribute("member", member);
@@ -54,7 +53,6 @@ public class MemberUpdateServlet_test extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
 		MemberVO member = new MemberVO();
 		req.setAttribute("member", member);
 		try {

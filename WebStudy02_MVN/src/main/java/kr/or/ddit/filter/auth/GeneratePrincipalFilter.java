@@ -16,6 +16,7 @@ import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.MemberVOWrapper;
 import lombok.extern.slf4j.Slf4j;
 
+//principal 객체 생성 메서드
 @Slf4j
 public class GeneratePrincipalFilter implements Filter{
 

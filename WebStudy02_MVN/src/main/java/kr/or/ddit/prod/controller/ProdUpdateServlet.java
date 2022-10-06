@@ -1,18 +1,24 @@
 package kr.or.ddit.prod.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 
+import kr.or.ddit.file.MultipartFile;
+import kr.or.ddit.file.filter.StandardMultipartHttpServletRequest;
 import kr.or.ddit.member.service.ServiceResult;
 import kr.or.ddit.prod.dao.OthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
@@ -25,9 +31,20 @@ import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
 @WebServlet("/prod/prodUpdate.do")
+@MultipartConfig
 public class ProdUpdateServlet extends HttpServlet{
 	private ProdService service = new ProdServiceImpl();
 	private OthersDAO othersDAO = new OthersDAOImpl();
+	
+	String saveFolderURL = "/resources/prodImages";
+	File saveFolder;
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		String saveFolderPath = getServletContext().getRealPath(saveFolderURL);
+		saveFolder = new File(saveFolderPath);
+	}
 	
 	private void viewResolve(String logicalViewName, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		if(logicalViewName.startsWith("redirect:")) {
@@ -51,7 +68,6 @@ public class ProdUpdateServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
 		String prodId = req.getParameter("what");
 		ProdVO prod = service.retrieveProd(prodId);
 		req.setAttribute("prod", prod);
@@ -61,7 +77,6 @@ public class ProdUpdateServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
 		ProdVO prod = new ProdVO();
 		req.setAttribute("prod", prod);
 		
@@ -70,6 +85,17 @@ public class ProdUpdateServlet extends HttpServlet{
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
+		
+		//1. 수정할 이미지가 있는지 확인.
+		//2. 없으면 기존꺼 그대로 실행.
+		//3. 있다면 기존 파일 삭제하고 새로운 파일 업로드 후 DB 업데이트
+		if(req instanceof StandardMultipartHttpServletRequest) {
+			MultipartFile prodImage = ((StandardMultipartHttpServletRequest) req).getFile("prodImage");
+			prod.setProdImage(prodImage);
+			prod.saveTo(saveFolder);
+			
+		}
+		
 		Map<String, String> errors = new ValidateUtils<ProdVO>().validate(prod, UpdateGroup.class);
 		req.setAttribute("errors", errors);
 		
